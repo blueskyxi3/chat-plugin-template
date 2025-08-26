@@ -1,37 +1,58 @@
-import { Card } from 'antd';
-import { createStyles } from 'antd-style';
-import dayjs from 'dayjs';
-import { memo } from 'react';
-import { Flexbox } from 'react-layout-kit';
+import { lobeChat } from '@lobehub/chat-plugin-sdk/client';
+import { Button } from 'antd';
+import { memo, useEffect, useState } from 'react';
+import { Center } from 'react-layout-kit';
 
+import Data from '@/components/DataRender';
+import { fetchClothes } from '@/services/clothes';
 import { ResponseData } from '@/type';
 
-const useStyles = createStyles(({ css, token }) => ({
-  date: css`
-    color: ${token.colorTextQuaternary};
-  `,
-}));
+const Render = memo(() => {
+  console.log('Render start...');
+  // 初始化渲染状态
+  const [data, setData] = useState<ResponseData>();
 
-const Render = memo<Partial<ResponseData>>(({ mood, clothes, today }) => {
-  const { styles } = useStyles();
+  // 初始化时从主应用同步状态
+  useEffect(() => {
+    console.log('初始化时从主应用同步状态');
+    lobeChat.getPluginMessage().then(setData);
+  }, []);
 
-  return (
-    <Flexbox gap={24}>
-      <Flexbox distribution={'space-between'} horizontal>
-        🌟心情：{mood}
-        <span className={styles.date}>{dayjs(today).format('YYYY/MM/DD')}</span>
-      </Flexbox>
-      <Flexbox gap={8}>
-        推荐衣物
-        <Flexbox gap={12} horizontal style={{ overflow: 'scroll' }}>
-          {clothes?.map((item) => (
-            <Card key={item.name} size={'small'} title={item.name}>
-              {item.description}
-            </Card>
-          ))}
-        </Flexbox>
-      </Flexbox>
-    </Flexbox>
+  // 记录请求参数
+  const [payload, setPayload] = useState<any>();
+
+  useEffect(() => {
+    console.log('[payload-1]', payload);
+    lobeChat.getPluginPayload().then((payload) => {
+      console.log('[payload-2]', payload);
+      if (payload.name === 'recommendClothes') {
+        setPayload(payload.arguments);
+      }
+    });
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetchClothes(payload);
+    console.log('[fetchData]', data);
+    setData(data);
+    lobeChat.setPluginMessage(data);
+  };
+  const isDataUndefined = data === undefined;
+  console.log('[data]', data, payload, isDataUndefined);
+  return isDataUndefined ? (
+    <Data {...data} />
+  ) : (
+    <Center style={{ height: 150 }}>
+      <Button
+        disabled={!payload}
+        onClick={() => {
+          fetchData();
+        }}
+        type={'primary'}
+      >
+        查询衣物
+      </Button>
+    </Center>
   );
 });
 

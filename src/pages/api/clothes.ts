@@ -19,6 +19,7 @@ export default async (req: Request) => {
     mood,
     today: Date.now(),
   };
-
+  console.log('[API_START]', result);
+  console.log('[API_END]');
   return new Response(JSON.stringify(result));
 };

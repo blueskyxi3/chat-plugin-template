@@ -52,6 +52,7 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@lobehub/chat-plugin-sdk": "^1",
     "@lobehub/chat-plugins-gateway": "^1",
     "@lobehub/ui": "latest",
@@ -59,17 +60,17 @@
     "antd-style": "^3",
     "dayjs": "^1",
     "next": "13.4.7",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19",
+    "react-dom": "^19",
     "react-layout-kit": "^1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18",
+    "@commitlint/cli": "^19",
     "@lobehub/lint": "latest",
-    "@types/react": "18",
+    "@types/react": "19",
     "@vercel/node": "^2",
     "@vitest/coverage-v8": "latest",
-    "commitlint": "^18",
+    "commitlint": "^19",
     "cross-env": "^7",
     "eslint": "^8",
     "father": "4.3.1",
@@ -84,7 +85,7 @@
     "vitest": "latest"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=19",
+    "react-dom": ">=19"
   }
 }

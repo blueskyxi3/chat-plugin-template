@@ -25,6 +25,7 @@
   ],
   "author": "LobeHub",
   "createdAt": "2023-09-03",
+  "gateway": "http://localhost:3400/api/gateway",
   "identifier": "plugin-identifier-markdown",
   "meta": {
     "avatar": "🚀",
